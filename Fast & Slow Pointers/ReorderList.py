@@ -34,7 +34,7 @@ class Solution:
 
         node = head_node
         for _ in range(middle_count):
-            node = straight_node
+            node = reverse_node
             straigth_next, reverse_next = straight_node.next, reverse_node.next
 
             straight_node.next = reverse_node
