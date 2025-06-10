@@ -15,8 +15,8 @@ class Solution:
             if value < current_max:
                 end_index = index
 
-        # for index in range(numbers_list_length -2, -1, -1):
-            reverse_index = numbers_list_length - index +1
+        for reverse_index in range(numbers_list_length -2, -1, -1):
+            # reverse_index = numbers_list_length - index +1
             value = numbers_list[reverse_index]
             current_min = min(value, current_min)
 
