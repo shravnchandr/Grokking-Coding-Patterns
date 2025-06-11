@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import List
 
 
 class Solution:
@@ -36,3 +37,29 @@ class Solution:
 
         return False
     
+    def findAnagrams(self, main_string: str, sub_string: str) -> List[int]:
+        sub_string_length, main_string_length = len(sub_string), len(main_string)
+        index_list = list()
+
+        index = 0
+        while index < len(main_string):
+            char = main_string[index]
+
+            if char in sub_string:
+                if index + sub_string_length <= main_string_length:
+                    if self.checkInclusion(sub_string, main_string[index: index+sub_string_length]):
+                        index_list.append(index)
+                        
+                    left_index, right_index = index, index + sub_string_length
+                    while right_index < main_string_length and main_string[left_index] == main_string[right_index]:
+                        index_list.append(left_index)
+                        left_index, right_index = left_index +1, right_index +1
+
+                    if self.checkInclusion(sub_string, main_string[left_index: right_index]):
+                        index_list.append(left_index)
+
+                    index = right_index
+
+            index = index +1
+
+        return list(set(index_list))
