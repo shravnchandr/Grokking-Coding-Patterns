@@ -1,13 +1,13 @@
 from typing import List
 
 class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        hashMap = dict()
+    def twoSum(self, numbers_list: List[int], target: int) -> List[int]:
+        difference_dict = dict()
 
-        for index,value in enumerate(nums):
+        for index,number in enumerate(numbers_list):
             
-            if value in hashMap.keys():
-                return [hashMap[value], index]
+            if number in difference_dict.keys():
+                return [difference_dict[number], index]
             
-            hashMap[target - value] = index
+            difference_dict[target - number] = index
         
