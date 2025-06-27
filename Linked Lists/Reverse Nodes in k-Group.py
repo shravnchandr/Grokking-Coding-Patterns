@@ -8,22 +8,29 @@ class ListNode:
 
 
 class Solution:
-    def reverse_list(self, head_node: ListNode, k_index: int) -> Tuple[ListNode]:
-        left_node, middle_node = head_node, head_node.next
-        head_node.next = None
+    def reverse_list(self, head_node: ListNode, reverse_count: int) -> Tuple[ListNode]:
+        prev_node, curr_node = None, head_node
+        new_tail = head_node
 
-        for _ in range(k_index):
-            right_node = middle_node.next
+        for _ in range(reverse_count):
+            if curr_node is None:
+                break
 
-            middle_node.next = left_node
-            left_node = middle_node
-            middle_node = right_node
+            next_node = curr_node.next
+            curr_node.next = prev_node
+            prev_node = curr_node
+            curr_node = next_node
 
-        return left_node, head_node
+        new_head = prev_node
+        return new_head, new_tail
 
 
     def reverseKGroup(self, head_node: Optional[ListNode], k_index: int) -> Optional[ListNode]:
+        if head_node is None or k_index == 1:
+            return head_node
+        
         dummy_node = ListNode()
+        
         start_node, traverse_node = dummy_node, head_node
 
         while traverse_node:
@@ -39,7 +46,7 @@ class Solution:
                 break
 
             new_start, new_end = self.reverse_list(old_start, k_index)
-            new_end.next = traverse_node
+            new_end.next = old_end
             start_node.next = new_start
 
             start_node = new_end
