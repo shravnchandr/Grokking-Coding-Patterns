@@ -2,20 +2,24 @@ from typing import List
 
 
 class Solution:
-    def permute(self, numbers_list: List[int]) -> List[List[int]]:
-        permute_list = list()
+    def subsets(self, numbers_list: List[int]) -> List[List[int]]:
+        final_list, current_list = list(), list()
 
-        def helperFunction(current_list: List[int]) -> None:
-            if len(current_list) == len(numbers_list):
-                permute_list.append(current_list[:])
+        def recursive_backtracking(index: int):
+            if index == len(numbers_list):
+                final_list.append(current_list[:])
                 return
             
-            for number in numbers_list:
-                if number not in current_list:
-                    current_list.append(number)
-                    helperFunction(current_list)
-                    current_list.pop()
+            current_list.append(numbers_list[index])
+            for jndex in range(index +1, len(numbers_list)):
+                recursive_backtracking(jndex)
 
-        helperFunction()
-        return permute_list
+            final_list.append(current_list[:])
+            current_list.pop()
+
+        for index in range(len(numbers_list)):
+            recursive_backtracking(index)
+
+        final_list.append([])
+        return final_list
         

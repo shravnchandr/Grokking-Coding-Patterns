@@ -5,15 +5,15 @@ class Solution:
     def combine(self, number: int, length: int) -> List[List[int]]:
         combine_list = list()
         
-        def helperFunction(index: int, current_list: List[int]) -> None:
+        def recursive_backtracking(index: int, current_list: List[int]) -> None:
             if len(current_list) == length:
                 combine_list.append(current_list[:])
                 return
             
             for value in range(index, number +1):
                 current_list.append(value)
-                helperFunction(value +1, current_list)
+                recursive_backtracking(value +1, current_list)
                 current_list.pop()
 
-        helperFunction(1, [])
+        recursive_backtracking(1, [])
         return combine_list

@@ -14,16 +14,16 @@ class Solution:
 
         letter_combo_list = list()
 
-        def helperFunction(index: int, current_string: List[str]) -> None:
+        def recursive_backtracking(index: int, current_string: List[str]) -> None:
             if index == len(digits):
                 letter_combo_list.append(''.join(current_string))
                 return
 
             for char in num_to_alpha[digits[index]]:
                 current_string.append(char)
-                helperFunction(index +1, current_string)
+                recursive_backtracking(index +1, current_string)
                 current_string.pop()
 
-        helperFunction(0, [])
+        recursive_backtracking(0, [])
         return letter_combo_list
     

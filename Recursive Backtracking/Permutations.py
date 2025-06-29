@@ -5,20 +5,19 @@ class Solution:
     def permute(self, numbers_list: List[int]) -> List[List[int]]:
         permute_list = list()
 
-        def helperFunction(index: int, current_list: List[int]) -> None:
+        def recursive_backtracking(current_list: List[int]) -> None:
             if len(current_list) == len(numbers_list):
                 permute_list.append(current_list[:])
                 return
             
-            while index < len(numbers_list):
-                current_list.append(numbers_list[index])
-                helperFunction(index +1, current_list)
-                current_list.pop()
+            for number in numbers_list:
+                if number not in current_list:
+                    current_list.append(number)
+                    recursive_backtracking(current_list)
+                    current_list.pop()
 
-        for index, number in enumerate(numbers_list):
-            helperFunction([number])
+        recursive_backtracking([])
 
         return permute_list
-
-
+        
         
