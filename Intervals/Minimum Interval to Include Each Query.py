@@ -22,28 +22,44 @@ class Solution:
     
         
     def minInterval(self, intervals_list: List[List[int]], queries_list: List[int]) -> List[int]:
-        intervals_list = sorted(intervals_list)
+        intervals_list = sorted(intervals_list) #, key= lambda pair: pair[1])
+
+        dp_memoization = {}
+        def find_interval(query:int, left_index: int, right_index: int) -> int:
+            if right_index < left_index:
+                return float('inf')
+
+            if not intervals_list[left_index][0] <= query <= intervals_list[right_index][1]:
+                return float('inf')
+
+            if (query, left_index, right_index) in dp_memoization:
+                return dp_memoization[(query, left_index, right_index)]    
+            
+            middle_index = (left_index + right_index) // 2
+            start, end = intervals_list[middle_index]
+
+            if start <= query <= end:
+                check_left_area = find_interval(query, left_index, middle_index -1)
+                check_right_area = find_interval(query, middle_index +1, right_index)
+
+                min_interval = min(check_left_area, check_right_area, end - start +1)
+
+            else:
+                check_left_area = find_interval(query, left_index, middle_index -1)
+                check_right_area = find_interval(query, middle_index +1, right_index)
+
+                min_interval = min(check_left_area, check_right_area)
+
+            dp_memoization[(query, left_index, right_index)] = min_interval
+            return dp_memoization[(query, left_index, right_index)]
 
         return_list = []
         for query in queries_list:
-            interval_size = float('inf')    
+            dp_memoization = {}
 
-            left_index, right_index = 0, len(intervals_list)
-            while left_index <= right_index:
-                middle_index = (left_index + right_index) // 2
-                start, end = intervals_list[middle_index]
-
-                if start <= query <= end:
-                    interval_size = min(interval_size, end - start +1)
-                    right_index = middle_index -1
-
-                else:
-                    if query < start:
-                        right_index = middle_index -1
-                    elif query > end:
-                        left_index = middle_index +1
-
+            interval_size = find_interval(query, 0, len(intervals_list) -1)
             interval_size = interval_size if interval_size != float('inf') else -1
+            
             return_list.append(interval_size)
 
         return return_list
