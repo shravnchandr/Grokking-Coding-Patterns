@@ -1,23 +1,21 @@
-from collections import defaultdict
+import functools
 from typing import List
 
 
 class Solution:
     def largestNumber(self, numbers_list: List[int]) -> str:
-        
-        numbers_list = [str(number) for number in numbers_list]
-        numbers_list = sorted(numbers_list, reverse=True)
+        numbers_list = list(map(str, numbers_list))
 
-        numbers_dict = defaultdict(list)
-        for number in numbers_list:
-            numbers_dict[number[0]].append(number)
+        def compare(x, y):
+            if x + y > y + x:
+                return -1  # x should be placed before y
+            elif x + y < y + x:
+                return 1   # y should be placed before x
+            else:
+                return 0
+            
+        numbers_list.sort(key=functools.cmp_to_key(compare))
+        final_string = ''.join(numbers_list)
 
-        final_list = []
-
-        # for index in range(9, 0, -1):
-        #     if str(index in numbers_dict):
-
-
-
-        return ''.join(numbers_list)
-        
+        return final_string if final_string[0] != '0' else '0'
+    

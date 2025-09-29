@@ -32,3 +32,35 @@ class Solution:
                 return_length = max(current_length, return_length)
 
         return return_length
+    
+    
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        row_count, column_count = len(matrix), len(matrix[0])
+        directions = ((0, 1), (1, 0), (0, -1), (-1, 0))
+
+        # 1. Create a list of all cells and sort by value
+        cells = []
+        for r in range(row_count):
+            for c in range(column_count):
+                cells.append((matrix[r][c], r, c))
+        cells.sort()  # Sorts by value in ascending order
+
+        # 2. Initialize DP table
+        dp = [[1] * column_count for _ in range(row_count)]
+        
+        # 3. Iterate through sorted cells
+        for value, r, c in cells:
+            for dr, dc in directions:
+                pr, pc = r + dr, c + dc  # previous row/col
+                
+                if 0 <= pr < row_count and 0 <= pc < column_count and \
+                matrix[pr][pc] < matrix[r][c]:
+                    # Update current cell's path length
+                    dp[r][c] = max(dp[r][c], 1 + dp[pr][pc])
+
+        # 4. Find the max path length
+        max_length = 0
+        for r in range(row_count):
+            max_length = max(max_length, max(dp[r]))
+        
+        return max_length
